@@ -584,6 +584,110 @@ textarea {
   margin-bottom: 10px;
 }
 
+/* ---- 设置页 ---- */
+.settings-section {
+  margin-bottom: 16px;
+}
+
+.settings-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.settings-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.settings-about {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+}
+
+.settings-logo-leaf {
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+}
+
+.settings-about-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-app-name {
+  font-weight: 700;
+  font-size: 14px;
+  background: linear-gradient(135deg, #7de88a, #3ab54a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.settings-version {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.settings-brand {
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.settings-item:hover {
+  background: var(--bg-hover);
+}
+
+.settings-item.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.settings-item.danger .settings-item-title {
+  color: #ef4444;
+}
+
+.settings-item.danger svg {
+  color: #ef4444 !important;
+}
+
+.settings-item-info {
+  flex: 1;
+}
+
+.settings-item-title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.settings-item-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.settings-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 14px;
+}
+
 /* ---- 版权页脚 ---- */
 .footer {
   display: flex;

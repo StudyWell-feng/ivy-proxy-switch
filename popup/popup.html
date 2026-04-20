@@ -210,6 +210,91 @@
     </div>
   </div>
 
+  <!-- 设置页 -->
+  <div class="page hidden" id="page-settings">
+    <div class="page-header">
+      <button class="btn-back" id="btn-back-from-settings">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+      </button>
+      <span>设置</span>
+    </div>
+
+    <!-- 关于 -->
+    <div class="settings-section">
+      <div class="settings-label">关于</div>
+      <div class="settings-card">
+        <div class="settings-about">
+          <svg class="settings-logo-leaf" viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="sg1" cx="40%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#7de88a"/>
+                <stop offset="55%" stop-color="#3ab54a"/>
+                <stop offset="100%" stop-color="#1e6e28"/>
+              </radialGradient>
+              <radialGradient id="sg2" cx="60%" cy="70%" r="60%">
+                <stop offset="0%" stop-color="#5dcc6a"/>
+                <stop offset="100%" stop-color="#1a5c22"/>
+              </radialGradient>
+            </defs>
+            <path d="M 8 34 Q 4 18 18 6 Q 32 4 34 16 Q 36 28 22 34 Q 18 36 12 38 Z" fill="url(#sg2)" opacity="0.85"/>
+            <path d="M 6 36 Q 2 22 14 10 Q 26 2 32 14 Q 38 26 24 36 Q 18 40 10 38 Z" fill="url(#sg1)"/>
+            <path d="M 10 34 Q 16 22 28 12" stroke="#1a5c22" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+          <div class="settings-about-info">
+            <div class="settings-app-name">Ivy Proxy Switch</div>
+            <div class="settings-version">版本 1.0.0</div>
+            <div class="settings-brand">by Study Feng</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 数据管理 -->
+    <div class="settings-section">
+      <div class="settings-label">数据管理</div>
+      <div class="settings-card">
+        <div class="settings-item" id="settings-export">
+          <div class="settings-item-info">
+            <div class="settings-item-title">导出配置</div>
+            <div class="settings-item-desc">将所有代理配置保存为 JSON 文件</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="color:var(--text-muted)">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5v-2z"/>
+          </svg>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-item" id="settings-import">
+          <div class="settings-item-info">
+            <div class="settings-item-title">导入配置</div>
+            <div class="settings-item-desc">从 JSON 文件恢复代理配置</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="color:var(--text-muted)">
+            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+          </svg>
+          <input type="file" id="import-file" accept=".json" style="display:none">
+        </div>
+      </div>
+    </div>
+
+    <!-- 危险操作 -->
+    <div class="settings-section">
+      <div class="settings-label">危险操作</div>
+      <div class="settings-card">
+        <div class="settings-item danger" id="settings-clear">
+          <div class="settings-item-info">
+            <div class="settings-item-title">清除所有数据</div>
+            <div class="settings-item-desc">删除全部代理配置和规则，不可恢复</div>
+          </div>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 底部版权 -->
   <footer class="footer">
     <span class="footer-brand">Study Feng</span><span class="footer-copy">© 2026</span>

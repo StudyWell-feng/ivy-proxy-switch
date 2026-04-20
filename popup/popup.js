@@ -18,7 +18,8 @@ const $ = id => document.getElementById(id);
 const pages = {
   main: $("page-main"),
   edit: $("page-edit"),
-  rules: $("page-rules")
+  rules: $("page-rules"),
+  settings: $("page-settings")
 };
 
 // ---- 初始化 ----
@@ -348,6 +349,14 @@ function bindEvents() {
     showPage("rules");
   });
 
+  // 设置按钮
+  $("btn-settings").addEventListener("click", () => {
+    showPage("settings");
+  });
+
+  // 返回主页
+  $("btn-back-from-settings").addEventListener("click", () => showPage("main"));
+
   // 添加新代理
   $("btn-add-profile").addEventListener("click", () => openEditPage());
 
@@ -412,6 +421,72 @@ function bindEvents() {
       });
     }
     saveRules();
+  });
+
+  // ---- 设置页功能 ----
+
+  // 导出配置
+  $("settings-export").addEventListener("click", () => {
+    const data = {
+      version: "1.0.0",
+      exportedAt: new Date().toISOString(),
+      profiles: state.profiles.filter(p => !p.isBuiltin),
+      rules: state.rules
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ivy-proxy-switch-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // 导入配置
+  $("settings-import").addEventListener("click", () => {
+    $("import-file").click();
+  });
+
+  $("import-file").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (!data.profiles) throw new Error("格式不正确");
+
+      const newProfiles = [
+        ...state.profiles.filter(p => p.isBuiltin),
+        ...data.profiles
+      ];
+      state.profiles = newProfiles;
+      if (data.rules) state.rules = data.rules;
+
+      await chrome.storage.local.set({ profiles: state.profiles, rules: state.rules });
+      alert(`✅ 导入成功！共导入 ${data.profiles.length} 个配置`);
+      showPage("main");
+      renderMain();
+    } catch (err) {
+      alert("导入失败：" + err.message);
+    }
+    e.target.value = "";
+  });
+
+  // 清除所有数据
+  $("settings-clear").addEventListener("click", async () => {
+    if (!confirm("⚠️ 确定要清除所有代理配置和规则吗？此操作不可恢复！")) return;
+    const builtins = state.profiles.filter(p => p.isBuiltin);
+    state.profiles = builtins;
+    state.rules = [];
+    state.activeProfileId = "direct";
+    await chrome.storage.local.set({
+      profiles: state.profiles,
+      rules: state.rules,
+      activeProfileId: "direct"
+    });
+    await chrome.runtime.sendMessage({ type: "APPLY_PROXY", profileId: "direct" });
+    showPage("main");
+    renderMain();
   });
 }
 
