@@ -715,6 +715,16 @@ textarea {
   opacity: 0.6;
 }
 
+.footer-brand-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.footer-brand-link:hover {
+  opacity: 0.75;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
