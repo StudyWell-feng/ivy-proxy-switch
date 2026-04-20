@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivy Proxy Switch</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部标题栏 -->
+    <header class="header">
+      <div class="logo">
+        <!-- 绿叶 Logo SVG -->
+        <svg class="logo-leaf" viewBox="0 0 40 40" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="leafGrad1" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#7de88a"/>
+              <stop offset="55%" stop-color="#3ab54a"/>
+              <stop offset="100%" stop-color="#1e6e28"/>
+            </radialGradient>
+            <radialGradient id="leafGrad2" cx="60%" cy="70%" r="60%">
+              <stop offset="0%" stop-color="#5dcc6a"/>
+              <stop offset="100%" stop-color="#1a5c22"/>
+            </radialGradient>
+            <filter id="leafShadow">
+              <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0a2a0e" flood-opacity="0.4"/>
+            </filter>
+          </defs>
+          <!-- 后叶片 -->
+          <path d="M 8 34 Q 4 18 18 6 Q 32 4 34 16 Q 36 28 22 34 Q 18 36 12 38 Z"
+                fill="url(#leafGrad2)" filter="url(#leafShadow)" opacity="0.85"/>
+          <!-- 前叶片 -->
+          <path d="M 6 36 Q 2 22 14 10 Q 26 2 32 14 Q 38 26 24 36 Q 18 40 10 38 Z"
+                fill="url(#leafGrad1)"/>
+          <!-- 叶脉主线 -->
+          <path d="M 10 34 Q 16 22 28 12"
+                stroke="#1a5c22" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/>
+          <!-- 叶脉细线 -->
+          <path d="M 14 30 Q 18 24 24 18 M 12 26 Q 16 22 20 18"
+                stroke="#1a5c22" stroke-width="0.7" fill="none" stroke-linecap="round" opacity="0.35"/>
+          <!-- 高光 -->
+          <path d="M 12 14 Q 18 10 24 12"
+                stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">Ivy Proxy Switch</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btn-rules" title="规则分流">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M3 18h6v-2H3v2zm0-5h12v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>
+        </button>
+        <button class="btn-icon" id="btn-settings" title="设置">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 主页面：代理列表 -->
+    <div class="page" id="page-main">
+      <div class="section-label">选择代理</div>
+      <div class="profile-list" id="profile-list">
+        <!-- 动态渲染 -->
+      </div>
+      <button class="btn-add" id="btn-add-profile">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        添加代理配置
+      </button>
+    </div>
+
+    <!-- 编辑代理配置页 -->
+    <div class="page hidden" id="page-edit">
+      <div class="page-header">
+        <button class="btn-back" id="btn-back-from-edit">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+        </button>
+        <span id="edit-page-title">新建代理</span>
+      </div>
+
+      <form class="edit-form" id="edit-form">
+        <input type="hidden" id="edit-id">
+
+        <div class="form-group">
+          <label>配置名称</label>
+          <input type="text" id="edit-name" placeholder="例：公司代理、家里 VPN" required>
+        </div>
+
+        <div class="form-group">
+          <label>代理类型</label>
+          <div class="type-tabs" id="type-tabs">
+            <button type="button" class="type-tab active" data-scheme="http">HTTP</button>
+            <button type="button" class="type-tab" data-scheme="https">HTTPS</button>
+            <button type="button" class="type-tab" data-scheme="socks5">SOCKS5</button>
+            <button type="button" class="type-tab" data-scheme="socks4">SOCKS4</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-3">
+            <label>服务器地址</label>
+            <input type="text" id="edit-host" placeholder="127.0.0.1" required>
+          </div>
+          <div class="form-group flex-1">
+            <label>端口</label>
+            <input type="number" id="edit-port" placeholder="7890" min="1" max="65535" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>颜色标签</label>
+          <div class="color-picker" id="color-picker">
+            <div class="color-option active" data-color="#3ab54a" style="background:#3ab54a"></div>
+            <div class="color-option" data-color="#1e7a2a" style="background:#1e7a2a"></div>
+            <div class="color-option" data-color="#5dcc6a" style="background:#5dcc6a"></div>
+            <div class="color-option" data-color="#2196f3" style="background:#2196f3"></div>
+            <div class="color-option" data-color="#ff9800" style="background:#ff9800"></div>
+            <div class="color-option" data-color="#e91e63" style="background:#e91e63"></div>
+            <div class="color-option" data-color="#00bcd4" style="background:#00bcd4"></div>
+            <div class="color-option" data-color="#607d8b" style="background:#607d8b"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            不使用代理的地址
+            <span class="label-hint">每行一条，支持通配符 *</span>
+          </label>
+          <textarea id="edit-bypass" rows="4" placeholder="localhost&#10;127.0.0.1&#10;*.local&#10;192.168.*"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="btn-cancel-edit">取消</button>
+          <button type="submit" class="btn-primary">保存</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 规则分流页 -->
+    <div class="page hidden" id="page-rules">
+      <div class="page-header">
+        <button class="btn-back" id="btn-back-from-rules">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+        </button>
+        <span>规则分流</span>
+        <button class="btn-text" id="btn-add-rule">+ 添加</button>
+      </div>
+
+      <div class="rules-info">
+        <span class="info-icon">ℹ️</span>
+        启用后，自动根据域名/URL 规则选择代理
+      </div>
+
+      <div class="rule-list" id="rule-list">
+        <!-- 动态渲染 -->
+      </div>
+
+      <div class="default-rule">
+        <span class="default-label">默认（其余流量）</span>
+        <select id="default-profile-select">
+          <!-- 动态渲染 -->
+        </select>
+      </div>
+    </div>
+
+    <!-- 规则编辑弹窗 -->
+    <div class="modal-overlay hidden" id="rule-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <span id="rule-modal-title">添加规则</span>
+          <button class="btn-icon" id="btn-close-rule-modal">✕</button>
+        </div>
+        <form id="rule-form">
+          <input type="hidden" id="rule-id">
+          <div class="form-group">
+            <label>规则名称</label>
+            <input type="text" id="rule-name" placeholder="例：国内直连">
+          </div>
+          <div class="form-group">
+            <label>匹配类型</label>
+            <select id="rule-match-type">
+              <option value="domain">域名匹配</option>
+              <option value="url">URL 匹配</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>匹配模式</label>
+            <input type="text" id="rule-pattern" placeholder="*.google.com 或 *://example.com/*" required>
+          </div>
+          <div class="form-group">
+            <label>使用代理</label>
+            <select id="rule-profile-select">
+              <!-- 动态渲染 -->
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="btn-cancel-rule">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部版权 -->
+  <footer class="footer">
+    <span class="footer-brand">Study Feng</span><span class="footer-copy">© 2026</span>
+  </footer>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

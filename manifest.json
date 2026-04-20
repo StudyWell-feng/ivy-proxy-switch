@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Ivy Proxy Switch",
+  "version": "1.0.0",
+  "description": "优雅的代理切换工具 - 快速管理多个代理配置，支持规则分流",
+  "author": "Ivy",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Ivy Proxy Switch",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background/service_worker.js",
+    "type": "module"
+  },
+  "permissions": [
+    "proxy",
+    "storage",
+    "tabs",
+    "notifications"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}

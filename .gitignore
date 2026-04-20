@@ -1,0 +1,14 @@
+# 临时脚本
+gen_icons.py
+find_logo.py
+logo_b64.txt
+logo_full_b64.txt
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
